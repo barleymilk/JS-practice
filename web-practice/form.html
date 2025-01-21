@@ -1,11 +1,192 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form</title>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <!-- Form -->
+    <h2>Form</h2>
+    <form action="">
+      <div>
+        <label for="username">아이디</label>
+        <input type="text" id="username" />
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" />
+      </div>
+      <input type="submit" value="제출하기" />
+    </form>
+
+    <!-- Form Input -->
+    <h2>Form Input</h2>
+    <form action="">
+      <fieldset>
+        <legend>개인정보</legend>
+        <input type="text" />
+        <input type="text" />
+      </fieldset>
+      <fieldset>
+        <legend>사업자정보</legend>
+        <input type="text" />
+        <input type="text" />
+      </fieldset>
+    </form>
+    <hr />
+
+    <h2>Form Input Tag</h2>
+    <form action="">
+      <fieldset>
+        <legend>Input Tag</legend>
+        <ul>
+          <li>
+            <label for="email">이메일</label>
+            <input type="email" id="email" required readonly />
+          </li>
+          <li>
+            <label for="tel">전화번호</label>
+            <input type="tel" id="tel" disabled />
+          </li>
+          <li>
+            <label for="url">url</label>
+            <input type="url" id="url" placeholder="url입력해주세요" />
+          </li>
+          <li>
+            <label for="number">number</label>
+            <input type="number" id="number" min="5" max="10" />
+          </li>
+          <li>
+            <label for="range">range</label>
+            <input type="range" id="range" />
+          </li>
+          <li>
+            <label for="password">password</label>
+            <input type="password" id="password" />
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>날짜 관련</legend>
+        <ul>
+          <li>
+            <label for="date">date</label>
+            <input type="date" id="date" min="2021-07-10" max="2023-07-15" />
+          </li>
+          <li>
+            <label for="month">month</label>
+            <input type="month" id="month" />
+          </li>
+          <li>
+            <label for="week">week</label>
+            <input type="week" id="week" />
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>시간 관련</legend>
+        <ul>
+          <li>
+            <label for="time">time</label>
+            <input type="time" min="16:00" max="18:00" />
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>그 외</legend>
+        <ul>
+          <li>
+            <input type="file" multiple />
+          </li>
+          <li><input type="hidden" name="" value="" /></li>
+        </ul>
+      </fieldset>
+      <input type="submit" value="제출하기" />
+    </form>
+    <hr />
+
+    <h2>checkbox</h2>
+    <form action="">
+      <fieldset>
+        <legend>좋아하는 색상을 모두 선택해주세요</legend>
+        <ul>
+          <li>
+            <label for="red">빨강</label
+            ><input type="checkbox" id="red" value="red" />
+          </li>
+          <li>
+            <label for="orange">주황</label
+            ><input type="checkbox" id="orange" value="orange" />
+          </li>
+          <li>
+            <label for="yellow">노랑</label
+            ><input type="checkbox" id="yellow" value="yellow" />
+          </li>
+          <li>
+            <label for="green">초록</label
+            ><input type="checkbox" id="green" value="green" />
+          </li>
+          <li>
+            <label for="blue">파랑</label
+            ><input type="checkbox" id="blue" value="blue" />
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>배송방법은?</legend>
+        <ul>
+          <li>
+            <label for="free">무료</label>
+            <input type="radio" name="delevery" id="free" value="free" />
+          </li>
+          <li>
+            <label for="pay">유료</label>
+            <input type="radio" name="delevery" id="pay" value="pay" />
+          </li>
+        </ul>
+      </fieldset>
+    </form>
+
+    <hr />
+    <h2>textarea & fieldset & datalist</h2>
+    <form action="/signup">
+      <fieldset>
+        <legend>자기소개서</legend>
+        <textarea name="" id="" cols="15" rows="5">빨간 사과가 좋아</textarea>
+      </fieldset>
+      <fieldset>
+        <legend>주문 상품을 선택해주세요</legend>
+        <ul>
+          <li>
+            <select name="goods" id="goods" multiple>
+              <option value="apple_10kg">사과10kg</option>
+              <option value="apple_20kg" selected>사과20kg</option>
+              <option value="apple_30kg">사과30kg</option>
+              <option value="apple_40kg">사과40kg</option>
+              <option value="apple_50kg">사과50kg</option>
+            </select>
+          </li>
+          <li>
+            <label for="ice-cream-choice">맛을 선택하세요</label>
+            <input
+              list="ice-cream-flavors"
+              id="ice-cream-choice"
+              name="ice-cream-choice"
+            />
+            <datalist id="ice-cream-flavors">
+              <option value="Chocolate"></option>
+              <option value="Coconut"></option>
+              <option value="Mint"></option>
+              <option value="Strawberry"></option>
+              <option value="Vanilla"></option>
+            </datalist>
+          </li>
+        </ul>
+      </fieldset>
+      <button type="submit">제출하기</button>
+      <button type="reset">리셋하기</button>
+      <button type="button" onclick="alert('hello world')">버튼</button>
+    </form>
+  </body>
 </html>
