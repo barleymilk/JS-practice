@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        width: 400px;
+        height: 400px;
+        background: #f8f9fa;
+        position: relative;
+      }
+      #animate {
+        width: 50px;
+        height: 50px;
+        background: #6c757d;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JS Animation</h1>
+    <button onCLick="return myMove()">Click Me</button>
+    <div id="container">
+      <div id="animate">애니메이션</div>
+    </div>
+    <input type="button" id="target" value="button@@@" />
+    <input type="button" id="target1" value="button1" />
+    <input type="button" id="target2" value="button2" />
+  </body>
+  <script>
+    function myMove() {
+      let id = null;
+      const elem = document.getElementById("animate");
+      let pos = 0;
+      clearInterval(id);
+      id = setInterval(frame, 5);
+      function frame() {
+        if (pos === 350) {
+          clearInterval(id);
+        } else {
+          pos++;
+          elem.style.top = pos + "px";
+          elem.style.left = pos + "px";
+        }
+      }
+    }
+
+    let t = document.getElementById("target");
+    t.addEventListener("click", (e) => {
+      alert("Hello world, " + e.target.value);
+    });
+
+    let t1 = document.getElementById("target1");
+    let t2 = document.getElementById("target2");
+    function btn_listener(event) {
+      switch (event.target.id) {
+        case "target1":
+          alert(1);
+          break;
+        case "target2":
+          alert(2);
+          break;
+      }
+    }
+    t1.addEventListener("click", btn_listener);
+    t2.addEventListener("click", btn_listener);
+  </script>
+</html>
