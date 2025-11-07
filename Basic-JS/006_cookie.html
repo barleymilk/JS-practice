@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>저장소 3종 테스트</title>
+  </head>
+  <body>
+    <h1>웹 저장소 실습</h1>
+
+    <h2>🍪 쿠키 관리 (1분 만료)</h2>
+    <p id="cookie-status">쿠키 상태: 로딩 중...</p>
+    <button id="setCookieBtn">쿠키 설정 (1분)</button>
+    <button id="deleteCookieBtn">쿠키 삭제</button>
+    <hr />
+
+    <h2>💾 로컬 스토리지 (영구 테마)</h2>
+    <p id="local-status">로컬 상태: 로딩 중...</p>
+    <button id="setLocalBtn">테마 저장 (dark)</button>
+    <button id="deleteLocalBtn">테마 삭제</button>
+    <hr />
+
+    <h2>💬 세션 스토리지 (임시 알림)</h2>
+    <p id="session-status">세션 상태: 로딩 중...</p>
+    <button id="setSessionBtn">알림 저장</button>
+    <button id="deleteSessionBtn">알림 삭제</button>
+
+    <script>
+      // 여기에 Vanilla JS 코드를 작성하세요.
+
+      // 팁: document.cookie는 값을 설정하는 문법이 다른 저장소와 다릅니다.
+      // 만료일 설정 (Expires): new Date(Date.now() + 60 * 1000).toUTCString()
+
+      // 📝 과제 요구 사항
+      // 쿠키 (Cookie):
+      // 저장: 사용자 이름 (username='User_A')을 저장하고, 이 쿠키가 1분 후에 만료되도록 설정하세요.
+      // 읽기: 저장된 사용자 이름을 읽어 #cookie-status 요소에 출력하세요.
+      // 삭제: 만료일을 과거 시간으로 설정하여 쿠키를 강제로 삭제하는 버튼을 만드세요.
+      function setCookie(name, value, options = {}) {
+        options = {
+          path: "/",
+          expires: new Date(Date.now() + 60 * 1000).toUTCString(), // 1분 후 만료
+          ...options,
+        };
+
+        if (options.expires instanceof Date) {
+          options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(
+          value
+        )}`;
+
+        for (let optionKey in options) {
+          updatedCookie += "; " + optionKey;
+          let optionValue = options[optionKey];
+          if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+          }
+        }
+
+        document.cookie = updatedCookie;
+      }
+      function getCookie(name) {
+        let matches = document.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const $cookieStatus = document.getElementById("cookie-status");
+      const $setCookieBtn = document.getElementById("setCookieBtn");
+      const $deleteCookieBtn = document.getElementById("deleteCookieBtn");
+      $setCookieBtn.addEventListener("click", () => {
+        setCookie("username", "User_A", {
+          expires: new Date(Date.now() + 60 * 1000),
+        });
+        setCookieStatus();
+      });
+      $deleteCookieBtn.addEventListener("click", () => {
+        setCookie("username", "", { expires: -1 });
+        setCookieStatus();
+      });
+      function setCookieStatus() {
+        const username = getCookie("username");
+        if (username) {
+          $cookieStatus.innerHTML = `${username} 로그인`;
+        } else {
+          $cookieStatus.innerHTML = `로그아웃 상태`;
+        }
+      }
+
+      // 로컬 스토리지 (LocalStorage):
+      // 저장: 사용자가 선택한 웹사이트의 테마 설정 (theme='dark')을 저장하는 버튼을 만드세요.
+      // 읽기: 페이지 로드 시 이 테마 값을 읽어 #local-status 요소에 출력하세요. (이 값은 브라우저를 껐다 켜도 유지되어야 합니다.)
+      // 삭제: 저장된 테마 설정을 삭제하는 버튼을 만드세요.
+      const $localStatus = document.getElementById("local-status");
+      const $setLocalBtn = document.getElementById("setLocalBtn");
+      const $deleteLocalBtn = document.getElementById("deleteLocalBtn");
+      const $body = document.getElementsByTagName("body")[0];
+      $setLocalBtn.addEventListener("click", () => {
+        localStorage.setItem("theme", "dark");
+        $localStatus.innerHTML = "🌙 다크 테마 적용 중";
+        $body.style.backgroundColor = "black";
+        $body.style.color = "white";
+      });
+      $deleteLocalBtn.addEventListener("click", () => {
+        localStorage.removeItem("theme");
+        $localStatus.innerHTML = "☀️ 라이트 테마 적용 중";
+        $body.style.backgroundColor = "white";
+        $body.style.color = "black";
+      });
+      // 💡 초기 로드 시 LocalStorage 값으로 상태를 복원하는 함수
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+          // 다크 테마 상태 적용
+          $localStatus.innerHTML = "🌙 다크 테마 적용 중";
+          $body.style.backgroundColor = "black";
+          $body.style.color = "white";
+        } else {
+          // 라이트 테마 상태 적용
+          $localStatus.innerHTML = "☀️ 라이트 테마 적용 중";
+          $body.style.backgroundColor = "white";
+          $body.style.color = "black";
+        }
+      }
+      // 스크립트 실행 후 즉시 호출
+      initializeTheme();
+
+      // 세션 스토리지 (SessionStorage):
+      // 저장: 사용자가 페이지를 이동하는 동안 표시할 일회성 알림 메시지 (message='새로운 기능이 추가되었습니다.')를 저장하는 버튼을 만드세요.
+      // 읽기: 저장된 메시지를 읽어 #session-status 요소에 출력하세요. (브라우저 탭을 닫으면 이 값이 사라져야 합니다.)
+      // 삭제: 저장된 메시지를 삭제하는 버튼을 만드세요.
+      const $sessiontStatus = document.getElementById("session-status");
+      const $setSessionBtn = document.getElementById("setSessionBtn");
+      const $deleteSessionBtn = document.getElementById("deleteSessionBtn");
+      $setSessionBtn.addEventListener("click", () => {
+        sessionStorage.setItem("message", "새로운 기능이 추가되었습니다.");
+        const message = sessionStorage.getItem("message");
+        alert(message);
+        $sessiontStatus.innerHTML = message;
+      });
+      $deleteSessionBtn.addEventListener("click", () => {
+        sessionStorage.removeItem("message");
+        $sessiontStatus.innerHTML = "알림이 없습니다.";
+      });
+      // 💡 SessionStorage 초기 로드 시 값 확인
+      function initializeSessionStatus() {
+        const message = sessionStorage.getItem("message");
+
+        if (message) {
+          $sessiontStatus.innerHTML = `📢 임시 알림: ${message}`;
+          // 메시지를 읽었으면 다음 페이지 이동 시 다시 표시되지 않도록 삭제하는 로직도 고려할 수 있습니다.
+          // sessionStorage.removeItem("message");
+        } else {
+          $sessiontStatus.innerHTML = "세션 상태: 저장된 알림 없음";
+        }
+      }
+      // 스크립트 실행 후 즉시 호출
+      initializeSessionStatus();
+    </script>
+  </body>
+</html>
