@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function createCounter() {
+        let count = 0; // 👈 이 변수가 '프라이빗'하게 클로저에 갇힙니다.
+
+        return function increment() {
+          // 여기에 count를 증가시키고 반환하는 로직을 작성하세요.
+          return ++count;
+        };
+      }
+
+      // 테스트
+      const counter1 = createCounter(); // 새로운 클로저 환경 생성
+      console.log(counter1()); // 기대값: 1
+      console.log(counter1()); // 기대값: 2
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>장바구니 불변성 실습</title>
+  </head>
+  <body>
+    <h1>장바구니 상태 관리 실습 (불변성 유지)</h1>
+    <p>결과는 개발자 도구 (Console)에서 확인하세요.</p>
+
+    <script>
+      // ===============================================
+      // 장바구니 상태 시뮬레이션
+      // ===============================================
+      let cart = [
+        { id: 101, name: "고급 키보드", price: 150000, quantity: 1 },
+        { id: 102, name: "인체공학 마우스", price: 50000, quantity: 2 },
+      ];
+
+      function printCart() {
+        console.log("--- 현재 장바구니 상태 ---");
+        console.table(cart);
+        console.log("------------------------\n");
+      }
+
+      // ===============================================
+      // 1. 장바구니에 상품 추가 (ADD)
+      // ===============================================
+      function addToCart(item) {
+        console.log(`➡️ 1. 상품 추가 시도: ${item.name}`);
+        // [여기에 불변성을 유지하는 로직을 작성하세요]
+
+        // 힌트: 전개 구문(...)을 사용하여 새 배열을 만드세요.
+        cart = [...cart, item];
+      }
+
+      // ===============================================
+      // 2. 장바구니에서 특정 상품 제거 (REMOVE)
+      // ===============================================
+      function removeFromCart(itemId) {
+        console.log(`➡️ 2. 상품 제거 시도: ID ${itemId}`);
+        // [여기에 불변성을 유지하는 로직을 작성하세요]
+
+        // 힌트: filter() 메서드를 사용하여 제거할 ID가 아닌 항목들로만 새 배열을 만드세요.
+        cart = cart.filter((item) => item.id !== itemId);
+      }
+
+      // ===============================================
+      // 3. 장바구니 상품 수량 변경 (UPDATE)
+      // ===============================================
+      function updateQuantity(itemId, newQuantity) {
+        console.log(`➡️ 3. 수량 변경 시도: ID ${itemId}를 ${newQuantity}개로`);
+        // [여기에 불변성을 유지하는 로직을 작성하세요]
+
+        // 힌트: map() 메서드를 사용하여 항목을 순회하세요.
+        // ID가 일치하면 { ...기존객체, quantity: newQuantity } 로 새 객체를 반환하고,
+        // 일치하지 않으면 기존 항목(item)을 그대로 반환합니다.
+        cart = cart.map((item) => {
+          return item.id === itemId ? { ...item, quantity: newQuantity } : item;
+        });
+      }
+
+      // ===============================================
+      // 테스트 실행
+      // ===============================================
+
+      printCart();
+
+      // 1. 새 상품 추가 (id: 103)
+      const newItem = {
+        id: 103,
+        name: "게이밍 모니터",
+        price: 400000,
+        quantity: 1,
+      };
+      addToCart(newItem);
+      printCart();
+
+      // 2. 상품 수량 변경 (id: 102를 3개로)
+      updateQuantity(102, 3);
+      printCart();
+
+      // 3. 상품 제거 (id: 101)
+      removeFromCart(101);
+      printCart();
+    </script>
+  </body>
+</html>
